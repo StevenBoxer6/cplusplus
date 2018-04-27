@@ -1,0 +1,232 @@
+
+//
+// Created by Steven Boxer on 11/14/17.
+//
+
+#include <iostream>
+#include <cstdlib>
+#include "SortingMethods.h"
+#include <fstream>
+#include <vector>
+
+using namespace std;
+
+SortingMethods::SortingMethods()
+{
+    this->numSwaps = 0;
+}
+
+SortingMethods::~SortingMethods()
+{
+    //TODO THIS
+}
+
+int SortingMethods::GetNumSwaps()
+{
+    return this->numSwaps;
+}
+
+void SortingMethods::SetNumSwaps(int num){
+    this->numSwaps = num;
+}
+
+void SortingMethods::Swap(int & one, int & two)
+{
+    int temp = one;
+    one = two;
+    two = temp;
+}
+
+void SortingMethods::InsertionSort(vector<int> & values, int length)
+{
+    int i, cur, j;
+    for (i = 1; i < length; i++)
+    {
+        cur = values[i];
+        j = i - 1;
+
+        while (j >= 0 && values[j] > cur)
+        {
+            values[j + 1] = values[j];
+            j = j - 1;
+            this->numSwaps++; 
+        }
+        values[j + 1] = cur;
+	this->numSwaps++; //steven
+    }
+}
+
+//void SortingMethods::InsertItem(vector<int> values, int start, int end)
+//{
+//    bool finished = false;
+//    int current = end;
+//
+//    bool stillSearching = (current != start);
+//
+//    while (stillSearching && !finished)
+//    {
+//        if(values[current] < values[current-1])
+//        {
+//            Swap(values[current], values[current-1]); //page 677
+//            current--;
+//            stillSearching = (current != start);
+//            numSwaps++;
+//        }
+//        else
+//            finished = true;
+//    }
+//}
+//
+//void SortingMethods::InsertionSort(vector<int> values, int numValues)
+//{
+//    for(int count = 0; count < numValues; count++)
+//        InsertItem(values, 0, count);
+//}
+
+//void SortingMethods::MergeItem(vector<int> & values, int leftFirst, int leftLast,
+//                               int rightFirst, int rightLast, vector<int> & temp)
+//{
+//    int index = leftFirst;
+//    int firstNum = leftFirst;
+//
+//    while((leftFirst <= leftLast) && (rightFirst <= rightLast))
+//    {
+//        if(values[leftFirst] < values[rightFirst])
+//        {
+//            temp[index] = values[leftFirst];
+//            leftFirst++;
+//        }
+//        else
+//        {
+//            temp[index] = values[rightFirst];
+//            rightFirst++;
+//            numSwaps++;
+//        }
+//        index++;
+//
+//    }
+//
+//    while (leftFirst <= leftLast)
+//    {
+//        temp[index] = values[leftFirst];
+//        leftFirst++;
+//        index++;
+//    }
+//
+//    while(rightFirst <= rightLast)
+//    {
+//        temp[index] = values[rightFirst];
+//        rightFirst++;
+//        index++;
+//    }
+//
+//    for(index = firstNum; index <= rightLast; index ++)
+//        values[index] = temp[index];
+//}
+//
+//void SortingMethods::MergeSort(vector<int> & values, int first, int last, vector<int> temp)
+//{
+//    if(first < last)
+//    {
+//        int middle = (first + last) / 2;
+//        MergeSort(values, first, middle, temp);
+//        MergeSort(values, middle + 1, last, temp);
+//        MergeItem(values, first, middle, middle + 1, last, temp);
+//    }
+//}
+
+void SortingMethods::MergeItem(vector<int> & values, int left, int mid, int right)
+{
+    int x, y, z;
+    int length1 = mid - left + 1;
+    int length2 = right - mid;
+
+    vector<int> leftArr(length1);
+    vector<int> rightArr(length2);
+
+    for (x = 0; x < length1; x++)
+        leftArr[x] = values[left + x];
+    for (y = 0; y < length2; y++)
+        rightArr[y] = values[mid + 1 + y];
+
+    x = 0;
+    y = 0;
+    z = left;
+
+    while (x < length1 && y < length2)
+      {
+        if (leftArr[x] <= rightArr[y])
+        {
+            values[z] = leftArr[x];
+            x++;
+            this->numSwaps++;
+        }
+        else
+        {
+            values[z] = rightArr[y];
+            y++;
+            this->numSwaps++;
+        }
+        z++;
+    }
+
+    while (x < length1)
+    {
+        values[z] = leftArr[x];
+        x++;
+        z++;
+	this->numSwaps++;
+    }
+
+    while (y < length2)
+    {
+        values[z] = rightArr[y];
+        y++;
+        z++;
+	this->numSwaps++;
+    }
+}
+
+void SortingMethods::MergeSort(vector<int> & values, int left, int right)
+{
+    if (left < right)
+    {
+        int mid = left + (right - left) / 2;
+        MergeSort(values, left, mid);
+        MergeSort(values, mid + 1, right);
+        MergeItem(values, left, mid, right);
+	//this->numSwaps++; //Steven
+    }
+}
+
+int SortingMethods::Split(vector<int> & values, int first, int last)
+{
+    int pivot = values[last];
+    int i = (first - 1);
+
+    this->numSwaps ++;
+
+    for (int j = first; j <= last-1; j++)
+    {
+        if (values[j] <= pivot)
+        {
+            i++;
+            Swap(values[i], values[j]);
+            //this->numSwaps++;
+        }
+    }
+    Swap(values[i + 1], values[last]);
+    return (i + 1);
+}
+
+void SortingMethods::QuickSort(vector<int> & values, int first, int last)
+{
+    if(first < last)
+    {
+        int splitPoint = Split(values, first, last);
+        this->numSwaps++;
+	QuickSort(values, first, splitPoint - 1);
+        QuickSort(values, splitPoint + 1, last);
+	//this->numSwaps ++;
+    }
+}

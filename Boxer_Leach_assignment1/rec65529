@@ -1,0 +1,12 @@
+Boxer_Leach_assignment1/:
+total 36
+-rw-r--r--. 1 ugrad   29 Sep 28 15:56 input.txt
+-rw-r--r--. 1 ugrad  640 Sep 28 15:56 ItemType.cpp
+-rw-r--r--. 1 ugrad 1288 Sep 28 15:56 ItemType.h
+-rw-r--r--. 1 ugrad 4523 Sep 28 15:56 LinkedList.cpp
+-rw-r--r--. 1 ugrad 2411 Sep 28 15:56 LinkedList.h
+-rw-r--r--. 1 ugrad 2269 Sep 28 15:56 Main.cpp
+-rw-r--r--. 1 ugrad  455 Sep 28 15:56 Makefile
+-rw-r--r--. 1 ugrad  327 Sep 28 15:56 README
+-rw-r--r--. 1 ugrad    0 Sep 28 15:59 rec65529
+/home/ugrads/leach/2720/Boxer_Leach_assignment1/:/home/work/cs2720
